@@ -1,0 +1,130 @@
+swagger: "2.0"
+info:
+  description: "Este es el server de dalilah restó, una aplicación de pedidos para restaurantes"
+  version: "1.0.0"
+  title: "Delilah Restó"
+  contact:
+    email: "fusemayumi@gmail.com"
+host: "localhost:3000"
+basePath: "/"
+tags:
+- name: "product"
+  description: "acceso a los productos"
+- name: "orders"
+  description: "operaciones sobre los pedidos"
+- name: "user"
+  description: "Operaciones sobre usuarios"
+schemes:
+- "http"
+paths:
+  /user:
+    post:
+      tags:
+      - "user"
+      summary: "Crea un usuario"
+      description: "Crea un usuario"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        default:
+          description: "operación exitosa"
+  /user/login:
+    get:
+      tags:
+      - "user"
+      summary: "loggea al usuario en el sistema"
+      description: "loggea al usuario en el sistema"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          $ref: "#/definitions/Login"
+      responses:
+        "403":
+          description: "Usuario o contraseña incorrecta"
+        "200":
+          description: "operación exitosa"
+  /user/logout:
+    get:
+      tags:
+      - "user"
+      summary: "cierra la sesión del usuario loggeado"
+      description: "cierra la sesión del usuario loggeado"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        default:
+          description: "successful operation"
+  /products:
+    get:
+      tags:
+      - "product"
+      summary: "Returs Products"
+      description: "Returs Products"
+      produces:
+      - "application/json"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Product"
+        "401":
+          description: "token is required"
+      security:
+      - authorization: []
+securityDefinitions:
+  authorization:
+    type: "apiKey"
+    name: "authorization"
+    in: "header"
+definitions:
+  User:
+    type: "object"
+    properties:
+      nombre:
+        type: "string"
+  LoginSuccess:
+    type: "object"
+    properties:
+      message:
+        type: "string"
+      token:
+        type: "string"
+  Product:
+    type: "object"
+    properties:
+      idProducto:
+        type: "number"
+      nombre:
+        type: "string"
+      precio:
+        type: "number"
+      descripcion:
+        type: "string"
+  Login:
+    type: "object"
+    properties:
+      user:
+        description: "The user name for login"
+        type: "string"
+        required:
+        - "true"
+      password:
+        description: "The password for login"
+        type: "string"
+        required:
+        - "true"
